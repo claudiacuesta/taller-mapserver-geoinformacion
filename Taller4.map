@@ -1,0 +1,338 @@
+#######################################################
+#	Version: 0.2
+#   Licence: GNU GPL
+#	Autor: Claudia Cuesta
+#   Contact: claudia.cuesta at correounivalle.edu.co
+# 	Codigo: 202300678
+#######################################################
+
+MAP
+	
+	NAME Taller4
+		SIZE 1100 1300
+		STATUS ON
+		#EXTENT [xmin] [ymin] [xmax] [ymax]
+		EXTENT 1053855.50 860198.93 1068480.77 879011.06
+		
+		SHAPEPATH "geodata/"
+		FONTSET "lib/fonts/fonts.txt"
+		SYMBOLSET "lib/symbols/symbols.sym"
+		
+		IMAGECOLOR 255 255 255
+		UNITS METERS
+
+	WEB
+		IMAGEPATH "/var/www/html/geoinformacion/taller-mapserver-geoinformacion/tmp/"
+		IMAGEURL "tmp/"
+	END
+	
+		
+	#CONEXION DE LAS CAPAS ALMACENADAS EN LA BASE DE DATOS
+	
+	LAYER
+		CONNECTIONTYPE postgis
+		NAME "Poligonos"
+		STATUS ON
+		CONNECTION "user=user password=user dbname=uvruteo host=localhost port=5432"
+		DATA "the_geom FROM barrios_cali as poligonos using unique gid using SRID=3115"
+		TYPE POLYGON
+		CLASS
+			STYLE
+				COLOR  177 177 177
+				OUTLINECOLOR 0 0 0
+			END
+		END
+	END
+	
+	LAYER
+		CONNECTIONTYPE postgis
+		NAME "Lineas"
+		STATUS ON
+		CONNECTION "user=user password=user dbname=uvruteo host=localhost port=5432"
+		DATA "the_geom FROM rutas_mio as lineas using unique gid using SRID=3115"
+		TYPE LINE
+		CLASS
+			STYLE
+				COLOR 255 31 23
+				OUTLINECOLOR 0 0 0
+			END
+		END
+	END
+	
+	LAYER
+		CONNECTIONTYPE postgis
+		NAME "Puntos"
+		STATUS ON
+		CONNECTION "user=user password=user dbname=uvruteo host=localhost port=5432"
+		DATA "the_geom FROM estaciones_mio as puntos using unique gid using SRID=3115"
+		TYPE POINT
+		CLASS
+			STYLE
+			    SYMBOL tent
+				SIZE 25
+				COLOR  55 16 43
+				OUTLINECOLOR 55 16 43
+			END
+		END
+	END
+	
+	LAYER
+		CONNECTIONTYPE postgis
+		NAME "Poligonos"
+		STATUS ON
+		CONNECTION "user=user password=user dbname=uvruteo host=localhost port=5432"
+		DATA "the_geom FROM areas_protegidas as poligonos using unique gid using SRID=3115"
+		TYPE POLYGON
+		CLASS
+			STYLE
+				COLOR 65 134 58
+				OUTLINECOLOR 0 0 0
+			END
+		END
+	END
+	
+	LAYER
+		CONNECTIONTYPE postgis
+		NAME "Poligonos"
+		STATUS ON
+		CONNECTION "user=user password=user dbname=uvruteo host=localhost port=5432"
+		DATA "the_geom FROM rios as poligonos using unique gid using SRID=3115"
+		TYPE POLYGON
+		CLASS
+			STYLE
+				COLOR 38 62 224   
+				OUTLINECOLOR 0 0 0
+			END
+		END
+	END
+	
+	LAYER
+		CONNECTIONTYPE postgis
+		NAME "Poligonos"
+		STATUS ON
+		CONNECTION "user=user password=user dbname=uvruteo host=localhost port=5432"
+		DATA "the_geom FROM zona_ambiental_rio_cauca as poligonos using unique gid using SRID=3115"
+		TYPE POLYGON
+		CLASS
+			STYLE
+				COLOR  30 232 243   
+				OUTLINECOLOR 0 0 0
+			END
+		END
+	END
+	
+	
+	
+	#Leyenda embebida
+	LEGEND
+		
+		STATUS EMBED
+		IMAGECOLOR 255 255 102
+		POSITION LL
+		KEYSIZE 20 12
+		KEYSPACING 5 5
+		LABEL
+			TYPE TRUETYPE
+			FONT "sans"
+			SIZE 11
+			COLOR 0 0 0
+			TEXT "LEYENDA"
+		END
+		OUTLINECOLOR 51 51 51
+		#TRANSPARENT on
+	END
+	
+		#BARRA DE ESCALA
+	SCALEBAR
+		STYLE 0
+		STATUS EMBED
+		SIZE 250 4
+		COLOR 0 0 0
+		UNITS METERS
+		INTERVALS 5
+		TRANSPARENT off
+		POSITION LR
+		BACKGROUNDCOLOR 255 255 255
+		IMAGECOLOR 255 255 255
+		OUTLINECOLOR 211 211 211
+		LABEL
+			COLOR 0 0 0
+			SIZE TINY
+		END 
+	END
+
+		#FLECHA NORTE
+	LAYER
+		NAME "Norte"
+		TYPE POINT
+		STATUS ON
+		TRANSFORM OFF
+		POSTLABELCACHE TRUE
+		FEATURE
+			POINTS 
+				35 35
+			END
+		END
+		CLASS
+			SYMBOL 'rosavientos'
+			COLOR 0 0 0
+			OUTLINECOLOR 0 0 0
+			STYLE END
+		END
+	END
+
+	
+	#SIMBOLOGIA DE LAS CAPAS DEL MAPA
+		LAYER
+		NAME "Poligonos"
+		STATUS ON
+		DATA "barrios_cali.shp"
+		TYPE POLYGON
+		
+		LABELITEM "barrio"
+		LABELCACHE ON
+		
+		CLASS
+			NAME "Barrios Cali"
+			STYLE
+				COLOR 177 177 177
+				OUTLINECOLOR 0 0 0
+			END
+			
+			LABEL
+				COLOR 220 73 0
+				FONT sans
+				TYPE TRUETYPE
+				POSITION CC
+				PARTIALS TRUE
+				SIZE 10
+				BUFFER 1
+				OUTLINECOLOR  255 255 255
+			END
+		END
+	END
+
+	LAYER
+		NAME "Lineas"
+		STATUS ON
+		DATA "rutas_mio.shp"
+		TYPE LINE
+		CLASS
+			NAME "Rutas MIO"
+			STYLE
+				COLOR 255 31 23
+				OUTLINECOLOR 7 123 123
+			END
+		END
+	END
+	
+	LAYER
+		NAME "Puntos"
+		STATUS ON
+		DATA "estaciones_mio.shp"
+		TYPE POINT
+		CLASS
+			NAME "Estaciones MIO"
+			STYLE
+			    SYMBOL star
+				SIZE 10
+				COLOR  55 161 43
+				OUTLINECOLOR 55 16 43
+			END
+		END
+	END
+	
+	LAYER
+		NAME "Poligonos"
+		STATUS ON
+		DATA "areas_protegidas.shp"
+		TYPE POLYGON
+		
+		LABELITEM "tipo"
+		LABELCACHE ON
+		
+		CLASS
+			NAME "Áreas protegidas"
+			STYLE
+				COLOR 65 134 58
+				OUTLINECOLOR 0 0 0
+			END
+			LABEL
+				COLOR 0 0 0
+				FONT sans
+				TYPE TRUETYPE
+				POSITION CC
+				PARTIALS TRUE
+				SIZE 15
+				BUFFER 3
+				OUTLINECOLOR 255 255 255
+			END
+		END
+	END
+	
+	LAYER
+		NAME "Poligonos"
+		STATUS ON
+		DATA "rios.shp"
+		TYPE POLYGON
+		
+		CLASS
+			NAME "Ríos"
+			STYLE
+				COLOR 38 62 224 
+				OUTLINECOLOR 0 0 0
+			END
+		END
+	END
+	
+	LAYER
+		NAME "Poligonos"
+		STATUS ON
+		DATA "zona_ambiental_rio_cauca.shp"
+		TYPE POLYGON
+		
+		CLASS
+			NAME "Zona ambiental Rio cali"
+			STYLE
+				COLOR 30 232 243  
+				OUTLINECOLOR 0 0 0
+			END
+		END
+	END
+		
+	#DEFINICION DE GRILLA
+	LAYER
+		NAME "Grilla"
+		METADATA
+			"DESCRIPTION" "Grid"
+		END
+		TYPE LINE
+		STATUS ON
+		CLASS
+			NAME "Graticule"
+			COLOR 0 0 0
+			LABEL
+				COLOR 0 0 0
+				FONT sans
+				TYPE truetype
+				SIZE 12
+				POSITION AUTO
+				PARTIALS FALSE
+				BUFFER 6
+				OUTLINECOLOR 114 115 125
+			END
+		END
+		PROJECTION
+			"init=epsg:3115"
+		END
+		GRID
+			#LABELFORMAT DDMM
+			#MAXARCS 5
+			#MAXINTERVAL 5
+			#MAXSUBDIVIDE 2
+			
+			LABELFORMAT '%.0fm'
+			MININTERVAL 5000
+		END
+	END
+END
